@@ -19,6 +19,13 @@ WEAK_HANDLER(SVCall_Handler);
 WEAK_HANDLER(DebugMon_Handler);
 WEAK_HANDLER(PendSV_Handler);
 WEAK_HANDLER(SysTick_Handler);
+WEAK_HANDLER(EXTI0_Handler);
+WEAK_HANDLER(EXTI1_Handler);
+WEAK_HANDLER(EXTI2_Handler);
+WEAK_HANDLER(EXTI3_Handler);
+WEAK_HANDLER(EXTI4_Handler);
+WEAK_HANDLER(EXTI9_5_Handler);
+WEAK_HANDLER(EXTI15_10_Handler);
 
 extern uint32_t _stack_top[];
 extern uint32_t _data_loadaddr[];
@@ -49,7 +56,13 @@ const uint32_t isr_vector[] =
 	(uint32_t)PendSV_Handler,
 	(uint32_t)SysTick_Handler,
 	
-	// Add IRQ Handlers as required
+	[22] = (uint32_t)EXTI0_Handler,
+	[23] = (uint32_t)EXTI1_Handler,
+	[24] = (uint32_t)EXTI2_Handler,
+	[25] = (uint32_t)EXTI3_Handler,
+	[26] = (uint32_t)EXTI4_Handler,
+	[39] = (uint32_t)EXTI9_5_Handler,
+	[56] = (uint32_t)EXTI15_10_Handler,
 };
 
 void Reset_Handler(void)

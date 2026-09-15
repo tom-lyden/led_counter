@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 4.3)
 project(led_counter C)
 
-set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD 11)
 
 add_executable(led_counter src/main.c
         include/board_definition.h)

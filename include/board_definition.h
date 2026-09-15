@@ -5,9 +5,12 @@
 #ifndef LED_COUNTER_BOARD_DEFINITION_H
 #define LED_COUNTER_BOARD_DEFINITION_H
 
-#define Offboard_LED_Pin_Red (GPIO_PIN_13)
-#define Offboard_LED_Pin_Green (GPIO_PIN_14)
-#define Offboard_LED_Pin_Blue (GPIO_PIN_15)
-#define Offboard_LED_GPIO_Port (GPIO_PORT_B)
+#define LED_GPIO_PORT (GPIO_PORT_B)
+#define LED_PIN_RED (GPIO_PIN_13)
+#define LED_PIN_GREEN (GPIO_PIN_14)
+#define LED_PIN_BLUE (GPIO_PIN_15)
+
+#define BUTTON_GPIO_PORT (GPIO_PORT_C)
+#define BUTTON_PIN (GPIO_PIN_10)
 
 #endif //LED_COUNTER_BOARD_DEFINITION_H

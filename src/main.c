@@ -1,4 +1,4 @@
-#include <f401-re-hal.h>
+#include <f401_re_hal.h>
 #include <timer.h>
 
 #include <board_definition.h>
@@ -8,6 +8,13 @@
 #define TIMER_DELAY_TICKS (((TICK_FREQUENCY_HZ) * (TIMER_DELAY_MSEC)) / 1000)
 
 static void set_led_counter_value(uint8_t value);
+
+static void test_button_trigger(void* p)
+{
+    static int irq_counter = 0;
+    
+    irq_counter++;
+}
 
 int main(void) 
 {
@@ -22,14 +29,33 @@ int main(void)
     if (SysTick_Init(&systick_cfg) != TRUE)
         return -1;
 
-    gpio_config_t gpio_init =
+    gpio_config_t gpio_output_init =
     {
         .mode = GPIO_MODE_OUTPUT,
     };
 
-    GPIO_Init(Offboard_LED_GPIO_Port, Offboard_LED_Pin_Red, &gpio_init);
-    GPIO_Init(Offboard_LED_GPIO_Port, Offboard_LED_Pin_Green, &gpio_init);
-    GPIO_Init(Offboard_LED_GPIO_Port, Offboard_LED_Pin_Blue, &gpio_init);
+    GPIO_Init(LED_GPIO_PORT, LED_PIN_RED, &gpio_output_init);
+    GPIO_Init(LED_GPIO_PORT, LED_PIN_GREEN, &gpio_output_init);
+    GPIO_Init(LED_GPIO_PORT, LED_PIN_BLUE, &gpio_output_init);
+    
+    gpio_config_t gpio_input_init =
+    {
+        .mode = GPIO_MODE_INPUT,
+        .pupd = GPIO_PUPD_PULLDOWN
+    };
+    
+    GPIO_Init(BUTTON_GPIO_PORT, BUTTON_PIN, &gpio_input_init);
+    
+    gpio_interrupt_cfg_t gpio_interrupt =
+    {
+        .type = GPIO_INTERRUPT_ANY_EDGE,
+        .callback = test_button_trigger,
+    };
+    
+    if (!GPIO_EnableInterrupt(BUTTON_GPIO_PORT, BUTTON_PIN, &gpio_interrupt))
+    {
+        while (1);
+    }
 
     timer_t timer;
     Timer_Init(&timer, SysTick_GetTick);
@@ -52,7 +78,7 @@ int main(void)
 
 static void set_led_counter_value(uint8_t value)
 {
-    GPIO_Write(Offboard_LED_GPIO_Port, Offboard_LED_Pin_Red, !!(value & 0x1));
-    GPIO_Write(Offboard_LED_GPIO_Port, Offboard_LED_Pin_Green, !!(value & 0x2));
-    GPIO_Write(Offboard_LED_GPIO_Port, Offboard_LED_Pin_Blue, !!(value & 0x4));
+    GPIO_Write(LED_GPIO_PORT, LED_PIN_RED, !!(value & 0x1));
+    GPIO_Write(LED_GPIO_PORT, LED_PIN_GREEN, !!(value & 0x2));
+    GPIO_Write(LED_GPIO_PORT, LED_PIN_BLUE, !!(value & 0x4));
 }
