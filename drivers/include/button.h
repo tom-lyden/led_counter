@@ -43,7 +43,9 @@ typedef struct
     uint32_t debounce_ticks;
     gpio_port_t gpio_port;
     gpio_pin_t gpio_pin;
-    gpio_state_t gpio_state;
+    gpio_state_t stable_state;
+    volatile uint32_t edge_counter;
+    uint32_t last_seen_edge_counter;
 } button_t;
 
 bool_t Button_Init(button_t* button, const button_cfg_t* cfg);
