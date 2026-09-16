@@ -3,13 +3,13 @@ project(led_counter C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(led_counter src/main.c
-        include/board_definition.h)
+add_executable(led_counter src/main.c)
 
 target_sources(led_counter
         PRIVATE
         platform/stm32f4xx_startup.c
         utils/src/timer.c
+        drivers/src/button.c
 )
 
 set_source_files_properties(platform/stm32f4xx_startup.c
@@ -34,4 +34,5 @@ target_include_directories(led_counter
         PRIVATE
         include
         utils/include
+        drivers/include
 )

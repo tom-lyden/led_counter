@@ -3,6 +3,10 @@
 //
 
 #include <stdint.h>
+#include <stm32f401re_interrupts.h>
+
+#define NUM_CORE_EXCEPTIONS (16)
+#define IRQ_VECTOR_INDEX(irq) ((irq) + (NUM_CORE_EXCEPTIONS))
 
 #define WEAK_HANDLER(handler) void handler(void) __attribute__((weak, alias("Default_Handler")))
 
@@ -56,13 +60,13 @@ const uint32_t isr_vector[] =
 	(uint32_t)PendSV_Handler,
 	(uint32_t)SysTick_Handler,
 	
-	[22] = (uint32_t)EXTI0_Handler,
-	[23] = (uint32_t)EXTI1_Handler,
-	[24] = (uint32_t)EXTI2_Handler,
-	[25] = (uint32_t)EXTI3_Handler,
-	[26] = (uint32_t)EXTI4_Handler,
-	[39] = (uint32_t)EXTI9_5_Handler,
-	[56] = (uint32_t)EXTI15_10_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_0)] = 		(uint32_t)EXTI0_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_1)] = 		(uint32_t)EXTI1_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_2)] = 		(uint32_t)EXTI2_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_3)] = 		(uint32_t)EXTI3_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_4)] = 		(uint32_t)EXTI4_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_9_5)] =		(uint32_t)EXTI9_5_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_15_10)] =	(uint32_t)EXTI15_10_Handler,
 };
 
 void Reset_Handler(void)

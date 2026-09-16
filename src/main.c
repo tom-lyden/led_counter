@@ -1,20 +1,13 @@
 #include <f401_re_hal.h>
-#include <timer.h>
-
 #include <board_definition.h>
+#include <button.h>
 
 #define TICK_FREQUENCY_HZ (1000)
-#define TIMER_DELAY_MSEC (500)
-#define TIMER_DELAY_TICKS (((TICK_FREQUENCY_HZ) * (TIMER_DELAY_MSEC)) / 1000)
+#define DEBOUNCE_MSEC (10)
+#define DEBOUNCE_TICKS (((TICK_FREQUENCY_HZ) * (DEBOUNCE_MSEC)) / 1000)
 
+static void increment_counter(void* context);
 static void set_led_counter_value(uint8_t value);
-
-static void test_button_trigger(void* p)
-{
-    static int irq_counter = 0;
-    
-    irq_counter++;
-}
 
 int main(void) 
 {
@@ -41,39 +34,45 @@ int main(void)
     gpio_config_t gpio_input_init =
     {
         .mode = GPIO_MODE_INPUT,
-        .pupd = GPIO_PUPD_PULLDOWN
+        .pupd = GPIO_PUPD_PULLDOWN,
     };
     
     GPIO_Init(BUTTON_GPIO_PORT, BUTTON_PIN, &gpio_input_init);
     
-    gpio_interrupt_cfg_t gpio_interrupt =
+    uint8_t counter = 0;
+
+    button_t button;
+    button_cfg_t button_cfg =
     {
-        .type = GPIO_INTERRUPT_ANY_EDGE,
-        .callback = test_button_trigger,
+        .on_released =  { .callback = increment_counter, .arg = &counter },
+        .debounce_ticks = DEBOUNCE_TICKS,
+        .get_ticks = SysTick_GetTick,
+        .gpio_port = BUTTON_GPIO_PORT,
+        .gpio_pin = BUTTON_PIN,
+        .active_level = BUTTON_ACTIVE_HIGH
     };
     
-    if (!GPIO_EnableInterrupt(BUTTON_GPIO_PORT, BUTTON_PIN, &gpio_interrupt))
+    if (!Button_Init(&button, &button_cfg))
     {
         while (1);
     }
-
-    timer_t timer;
-    Timer_Init(&timer, SysTick_GetTick);
-
-    uint8_t i = 0;
+        
+    set_led_counter_value(counter);
 
     while (1)
     {
-        if (Timer_IsRunning(&timer))
-            continue;
-        
-        set_led_counter_value(i);
-
-        Timer_Start(&timer, TIMER_DELAY_TICKS);
-        i++;
+        Button_Update(&button);
     }
     
     return 0;
+}
+
+static void increment_counter(void* context)
+{
+    uint8_t* counter = (uint8_t*)context;
+    (*counter)++;
+    
+    set_led_counter_value(*counter);
 }
 
 static void set_led_counter_value(uint8_t value)
