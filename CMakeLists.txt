@@ -13,7 +13,7 @@ target_sources(led_counter
 )
 
 set_source_files_properties(platform/stm32f4xx_startup.c
-    PROPERTIES COMPILE_OPTIONS "-fno-tree-loop-distribute-patterns;-save-temps=obj"
+        PROPERTIES COMPILE_OPTIONS "-fno-tree-loop-distribute-patterns;-save-temps=obj"
 )
 
 include(FetchContent)
@@ -21,7 +21,7 @@ include(FetchContent)
 FetchContent_Declare(
         f401_re_hal
         GIT_REPOSITORY https://github.com/tom-lyden/f401_re_hal.git
-        GIT_TAG        master
+        GIT_TAG master
 )
 
 FetchContent_MakeAvailable(f401_re_hal)
@@ -30,7 +30,7 @@ target_link_libraries(led_counter
         f401_re_hal
 )
 
-target_include_directories(led_counter 
+target_include_directories(led_counter
         PRIVATE
         include
         utils/include

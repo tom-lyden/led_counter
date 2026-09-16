@@ -41,7 +41,7 @@ extern uint32_t _ebss[];
 
 __attribute__((section(".isr_vector")))
 __attribute__ ((used)) // Force emission of this object despite not being used in this file
-const uint32_t isr_vector[] = 
+const uint32_t isr_vector[] =
 {
 	(uint32_t)_stack_top,
 	(uint32_t)Reset_Handler,
@@ -59,14 +59,14 @@ const uint32_t isr_vector[] =
 	(uint32_t)0, // Reserved
 	(uint32_t)PendSV_Handler,
 	(uint32_t)SysTick_Handler,
-	
-	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_0)] = 		(uint32_t)EXTI0_Handler,
-	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_1)] = 		(uint32_t)EXTI1_Handler,
-	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_2)] = 		(uint32_t)EXTI2_Handler,
-	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_3)] = 		(uint32_t)EXTI3_Handler,
-	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_4)] = 		(uint32_t)EXTI4_Handler,
-	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_9_5)] =		(uint32_t)EXTI9_5_Handler,
-	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_15_10)] =	(uint32_t)EXTI15_10_Handler,
+
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_0)]     = (uint32_t)EXTI0_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_1)]     = (uint32_t)EXTI1_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_2)]     = (uint32_t)EXTI2_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_3)]     = (uint32_t)EXTI3_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_4)]     = (uint32_t)EXTI4_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_9_5)]   = (uint32_t)EXTI9_5_Handler,
+	[IRQ_VECTOR_INDEX(IRQ_EXTI_LINE_15_10)] = (uint32_t)EXTI15_10_Handler,
 };
 
 void Reset_Handler(void)

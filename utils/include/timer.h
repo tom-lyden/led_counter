@@ -10,19 +10,19 @@
 
 typedef enum
 {
-    TIMER_STOPPED = 0,
-    TIMER_RUNNING = 1,
-    TIMER_EXPIRED = 2,
+	TIMER_STOPPED = 0,
+	TIMER_RUNNING = 1,
+	TIMER_EXPIRED = 2,
 } timer_state_t;
 
 typedef uint32_t get_ticks_t(void);
 
 typedef struct timer
 {
-    get_ticks_t* get_ticks;
-    uint32_t start_time;
-    uint32_t duration;
-    bool is_started;
+	get_ticks_t* get_ticks;
+	uint32_t start_time;
+	uint32_t duration;
+	bool is_started;
 } timer_t;
 
 void Timer_Init(timer_t* timer, get_ticks_t* get_ticks);
